@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.qlrm:qlrm:2.1.1'
     implementation 'javax.servlet:jstl'
     implementation 'org.apache.tomcat:tomcat-jasper:9.0.43'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j:8.0.32'
     annotationProcessor 'org.projectlombok:lombok'
