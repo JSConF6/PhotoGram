@@ -19,7 +19,7 @@
             <section class="login">
                <!--로그인박스-->
                 <article class="login__form__container">
-                   <!--로그인 폼--> 
+                   <!--로그인 폼-->
                    <div class="login__form">
                         <h1><img src="/images/logo.jpg" alt=""></h1>
                         
