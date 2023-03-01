@@ -2,6 +2,7 @@ package com.jsconf.photogram.config.auth;
 
 import com.jsconf.photogram.domain.user.User;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Getter @ToString
+@Getter @Setter @ToString
 public class PrincipalDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
