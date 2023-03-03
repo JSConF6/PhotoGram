@@ -1,6 +1,7 @@
 package com.jsconf.photogram.web;
 
 import com.jsconf.photogram.config.auth.PrincipalDetails;
+import com.jsconf.photogram.handler.ex.CustomValidationException;
 import com.jsconf.photogram.service.ImageService;
 import com.jsconf.photogram.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,11 @@ public class ImageController {
 
     @PostMapping("/image")
     public String imageUpload(ImageUploadDto imageUploadDto, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        // 서비스 호출
+
+        if(imageUploadDto.getFile().isEmpty()){
+            throw new CustomValidationException("이미지가 첨부되지 않았습니다.", null);
+        }
+
         imageService.ImageUpload(imageUploadDto, principalDetails);
         return "redirect:/user/" + principalDetails.getUser().getId();
     }

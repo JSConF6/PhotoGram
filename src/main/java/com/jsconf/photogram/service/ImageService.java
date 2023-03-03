@@ -1,11 +1,13 @@
 package com.jsconf.photogram.service;
 
 import com.jsconf.photogram.config.auth.PrincipalDetails;
+import com.jsconf.photogram.domain.image.Image;
 import com.jsconf.photogram.domain.image.ImageRepository;
 import com.jsconf.photogram.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +23,7 @@ public class ImageService {
     @Value("${file.path}")
     private String uploadFolder;
 
+    @Transactional
     public void ImageUpload(ImageUploadDto imageUploadDto, PrincipalDetails principalDetails){
         UUID uuid = UUID.randomUUID(); // uuid
         String imageFileName = uuid + "_" + imageUploadDto.getFile().getOriginalFilename(); // 1.jpg
@@ -34,5 +37,11 @@ public class ImageService {
         }catch(Exception e){
             e.printStackTrace();
         }
+
+        // image 테이블에 저장
+        Image image = imageUploadDto.toEntity(imageFileName, principalDetails.getUser());
+        imageRepository.save(image);
+
+        // System.out.println(imageEntity.toString());
     }
 }

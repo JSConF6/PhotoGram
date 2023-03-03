@@ -1,6 +1,7 @@
 package com.jsconf.photogram.handler;
 
 import com.jsconf.photogram.handler.ex.CustomApiException;
+import com.jsconf.photogram.handler.ex.CustomException;
 import com.jsconf.photogram.handler.ex.CustomValidationApiException;
 import com.jsconf.photogram.handler.ex.CustomValidationException;
 import com.jsconf.photogram.util.Script;
@@ -23,7 +24,16 @@ public class ControllerExceptionHandler {
         // 1. 클라이언트에게 응답할 떄는 Script 좋음
         // 2. Ajax통신 - CMRespDto
         // 3. Andriod 통신 - CMRespDto
-        return Script.back(e.getErrorMap().toString());
+        if (e.getErrorMap() == null){
+            return Script.back(e.getMessage());
+        } else {
+            return Script.back(e.getErrorMap().toString());
+        }
+    }
+
+    @ExceptionHandler(CustomException.class)
+    public String ㄷxception(CustomException e) {
+        return Script.back(e.getMessage());
     }
 
     @ExceptionHandler(CustomValidationApiException.class)

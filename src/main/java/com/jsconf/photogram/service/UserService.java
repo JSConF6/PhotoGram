@@ -2,7 +2,9 @@ package com.jsconf.photogram.service;
 
 import com.jsconf.photogram.domain.user.User;
 import com.jsconf.photogram.domain.user.UserRepository;
+import com.jsconf.photogram.handler.ex.CustomException;
 import com.jsconf.photogram.handler.ex.CustomValidationApiException;
+import com.jsconf.photogram.web.dto.user.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,22 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Transactional(readOnly = true)
+    public UserProfileDto userProfile(int pageUserId, int principalId) {
+        UserProfileDto dto = new UserProfileDto();
+
+        // SELECT * FROM image WHERE userId = :pageUserId;
+        User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
+            throw new CustomException("해당 프로필 페이지는 없는 페이지입니다.");
+        });
+
+        dto.setUser(userEntity);
+        dto.setPageOwnerState(pageUserId == principalId);
+        dto.setImageCount(userEntity.getImages().size());
+
+        return dto;
+    }
 
     @Transactional
     public User userUpdate(int id, User user) {
