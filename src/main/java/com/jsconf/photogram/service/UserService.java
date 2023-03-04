@@ -1,5 +1,6 @@
 package com.jsconf.photogram.service;
 
+import com.jsconf.photogram.domain.subscribe.SubscribeRepository;
 import com.jsconf.photogram.domain.user.User;
 import com.jsconf.photogram.domain.user.UserRepository;
 import com.jsconf.photogram.handler.ex.CustomException;
@@ -17,6 +18,7 @@ import java.util.function.Supplier;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SubscribeRepository subscribeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
@@ -31,6 +33,12 @@ public class UserService {
         dto.setUser(userEntity);
         dto.setPageOwnerState(pageUserId == principalId);
         dto.setImageCount(userEntity.getImages().size());
+
+        int subscribeState = subscribeRepository.mSubscribeState(principalId, pageUserId);
+        int subscribeCount = subscribeRepository.mSubscribeCount(pageUserId);
+
+        dto.setSubscribeState(subscribeState == 1);
+        dto.setSubscribeCount(subscribeCount);
 
         return dto;
     }
