@@ -1,14 +1,18 @@
 package com.jsconf.photogram.web;
 
 import com.jsconf.photogram.config.auth.PrincipalDetails;
+import com.jsconf.photogram.domain.image.Image;
 import com.jsconf.photogram.handler.ex.CustomValidationException;
 import com.jsconf.photogram.service.ImageService;
 import com.jsconf.photogram.web.dto.image.ImageUploadDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,7 +26,10 @@ public class ImageController {
     }
 
     @GetMapping("/image/popular")
-    public String popular() {
+    public String popular(Model model) {
+        // api는 데이터를 리턴하는 서버!!
+        List<Image> images = imageService.popularImage();
+        model.addAttribute("images", images);
         return "image/popular";
     }
 
