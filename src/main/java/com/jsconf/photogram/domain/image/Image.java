@@ -1,6 +1,7 @@
 package com.jsconf.photogram.domain.image;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jsconf.photogram.domain.comment.Comment;
 import com.jsconf.photogram.domain.likes.Likes;
 import com.jsconf.photogram.domain.user.User;
 import lombok.*;
@@ -35,6 +36,10 @@ public class Image { // N, 1
     private List<Likes> likes;
 
     // 댓글
+    @OrderBy("id DESC")
+    @JsonIgnoreProperties({"image"})
+    @OneToMany(mappedBy = "image")
+    private List<Comment> comments;
 
     private LocalDateTime createDate;
 
